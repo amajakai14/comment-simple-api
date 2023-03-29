@@ -1,11 +1,11 @@
 package main
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/amajakai14/comment-simple-api/internal/comment"
 	"github.com/amajakai14/comment-simple-api/internal/database"
+	transportHttp "github.com/amajakai14/comment-simple-api/internal/transport/http"
 )
 
 func Run() error {
@@ -20,23 +20,8 @@ func Run() error {
 		return err
 	}
 	cmtService := comment.NewService(db)
-	newComment, err := cmtService.PostComment(
-		context.Background(),
-		comment.Comment{
-			ID: "8a30ecaa-2a79-4f46-ad0b-c2f0cfc8bee2",
-			Slug: "manual-test",
-			Author: "Means",
-			Body: "Hello World!",
-		},
-	)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(newComment)
-	fmt.Println(cmtService.GetComment(
-		context.Background(),
-		"8a30ecaa-2a79-4f46-ad0b-c2f0cfc8bee2",
-	))
+
+	httpHandler := transportHttp.NewHandler(cmtService)
 
 	return nil
 }

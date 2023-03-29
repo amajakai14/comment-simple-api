@@ -13,6 +13,7 @@ require (
 require (
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/gorilla/mux v1.8.0
 	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/satori/go.uuid v1.2.0
 )
