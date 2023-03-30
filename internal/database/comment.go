@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/amajakai14/comment-simple-api/internal/comment"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 type CommentRow struct {
@@ -88,7 +88,7 @@ func (d *Database) UpdateComment(ctx context.Context, id string, cmt comment.Com
 		Body:   sql.NullString{String: cmt.Body, Valid: true},
 	}
 
-	rows, err := d.CLient.NamedQueryContext(
+	rows, err := d.Client.NamedQueryContext(
 		ctx,
 		`UPDATE comments SET
 		slug = :slug,
