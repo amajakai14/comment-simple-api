@@ -7,19 +7,30 @@ on:
 
 jobs:
   test:
-    strategy:
-      matrix:
-        go-version: [1.19.x]
-        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ubuntu-latest
 
-    runs-on: ${{ matrix.platform }}
-
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - name: Install go
       uses: actions/setup-go@v2
       with:
-        go-version: ${{ matrix.go-version }}
+        go-version: 1.19.x
     - uses: actions/checkout@v2
 
     - name: Test
-      run: go test -v ./...
+      run: go -tags=e2e test  -v ./...
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_NAME: postgres
