@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -21,7 +22,7 @@ func NewDatabase() (*Database, error) {
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_DB"),
 		os.Getenv("SSL_MODE"),
-)
+	)
 
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
@@ -33,12 +34,19 @@ func NewDatabase() (*Database, error) {
 		os.Getenv("SSL_MODE"),
 	)
 
-	dbConn, err := sqlx.Connect("postgres", connectionString)
-	if err != nil {
-		return &Database{}, fmt.Errorf("failed to connect to database: %v,", err)
-	}
+	retry := 0
+	var err error
+	for retry < 5 {
+		dbConn, err := sqlx.Connect("postgres", connectionString)
+		if err != nil {
+			retry++
+			time.Sleep(1 * time.Second)
+			continue
+		}
 
-	return &Database{Client: dbConn}, nil
+		return &Database{Client: dbConn}, nil
+	}
+	return &Database{}, fmt.Errorf("failed to connect to database: %v,", err)
 }
 
 func (d *Database) Ping(ctx context.Context) error {

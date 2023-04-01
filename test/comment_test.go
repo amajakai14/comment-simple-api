@@ -15,7 +15,7 @@ func TestPostComment(t *testing.T) {
 		client := resty.New()
 		res, err := client.R().
 			SetBody(`{"slug": "/", "author": "Means", "body": "hello from test"}`).
-			Post("http://127.0.0.1:8080/api/v1/comment")
+			Post("http://localhost:8080/api/v1/comment")
 
 		assert.NoError(t, err)
 		assert.Equal(t, 201, res.StatusCode())
