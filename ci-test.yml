@@ -17,8 +17,8 @@ services:
 
   api:
     build: 
-    context: .
-    dockerfile: ./test.Dockerfile
+      context: .
+      dockerfile: test.Dockerfile
     container_name: "comments-rest-api"
     environment:
       DB_USERNAME: "postgres"
