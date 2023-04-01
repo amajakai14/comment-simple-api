@@ -11,7 +11,7 @@ jobs:
     working_directory: /go/src/github.com/amajakai14/comment-simple-api
     docker:
       - image: cimg/go:1.19
-      - image: cimg/postgres:13.2
+      - image: cimg/postgres:15.2
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
