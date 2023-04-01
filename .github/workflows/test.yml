@@ -15,7 +15,7 @@ jobs:
       POSTGRES_DB: postgres
 
     services:
-      postgres:
+      db:
         image: postgres
         env:
           POSTGRES_USER: postgres
@@ -33,10 +33,11 @@ jobs:
 
     - name: start app
       env:
-        POSTGRES_USER: ${{ env.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-        POSTGRES_DB: ${{ env.POSTGRES_DB }}
-        POSTGRES_HOST: ${{ job.services.postgres.ports[5432] }}
+        DB_USERNAME: postgres
+        DB_PASSWORD: postgres
+        DB_DB: postgres
+        DB_HOST: db
+        SSL_MODE: disable
       run: ./app
 
     - name: Run tests

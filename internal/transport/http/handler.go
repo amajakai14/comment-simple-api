@@ -28,7 +28,7 @@ func NewHandler(service CommentService) *Handler {
 	h.mapRoutes()
 
 	h.Server = &http.Server{
-		Addr:    "localhost:8080",
+		Addr:    ":8080",
 		Handler: h.Router,
 	}
 	return h
