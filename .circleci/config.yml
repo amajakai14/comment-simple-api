@@ -10,8 +10,8 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     working_directory: /go/src/github.com/amajakai14/comment-simple-api
     docker:
-      - image: circleci/golang:1.19
-      - image: circleci/postgres:13.4
+      - image: cimg/go:1.19
+      - image: cimg/postgres:13.2
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
