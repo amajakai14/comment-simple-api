@@ -39,7 +39,9 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 5432
         SSL_MODE: disable
-      run: ./app
+      run: |
+        docker ps
+        ./app
 
     - name: Run tests
       run: go test -tags=e2e ./...
