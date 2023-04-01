@@ -15,6 +15,6 @@ jobs:
 
       - name: run test on docker-compose
         run: |
-          docker-compose -f ./docker-compose.yml up -d --build
+          docker-compose -f ./ci-test.yml up -d --build
           go test -tags=e2e -v ./...
         working-directory: ./

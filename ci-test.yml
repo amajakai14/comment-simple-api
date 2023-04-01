@@ -1,32 +1,42 @@
-version: '3'
+version: "3.8"
 
 services:
-  app:
-    build: 
-      context: "."
-      dockerfile: "Dockerfile"
-    image: "test"
-    container_name: "test"
-    ports:
-      - "8080:8080"
-    environment:
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DB: postgres
-      SSL_MODE: disable
-    depends_on:
-      - db
-
   db:
-    image: postgres:latest
-    container_name: "test-db"
+    image: postgres:12.2-alpine
+    container_name: "comments-database"
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      - POSTGRES_DB=postgres 
+      - POSTGRES_USER=postgres 
+      - POSTGRES_PASSWORD=postgres 
+    networks:
+      - fullstack
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
 
+  api:
+    build: 
+    context: .
+    dockerfile: ./test.Dockerfile
+    container_name: "comments-rest-api"
+    environment:
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_DB: "postgres"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      SSL_MODE: "disable"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - fullstack
 
+volumes:
+  database_postgres:
+
+networks:
+  fullstack:
+    driver: bridge
