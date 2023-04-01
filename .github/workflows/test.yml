@@ -28,9 +28,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Docker
-      uses: docker/setup-docker-action@v1
-
     - name: Build and run app
       run: go build -o app ./cmd/server/main.go
 
