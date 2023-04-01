@@ -6,43 +6,16 @@ on:
       - master
 
 jobs:
-  build:
+  run-test:
+    name: Run Test
     runs-on: ubuntu-latest
-    container: golang:1.19
-    env:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-
-    services:
-      db:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
-    - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: Build and run app
-      run: go build -o app ./cmd/server/main.go
-
-    - name: start app
-      env:
-        DB_USERNAME: postgres
-        DB_PASSWORD: postgres
-        DB_DB: postgres
-        DB_HOST: db
-        DB_PORT: 5432
-        SSL_MODE: disable
-      run: |
-        docker ps
-        docker run --network github_network -e DB_USERNAME=$DB_USERNAME -e DB_PASSWORD=$DB_PASSWORD -e DB_DB=$DB_DB -e DB_HOST=$DB_HOST -e DB_PORT=$DB_PORT -e SSL_MODE=$SSL_MODE -p 8080:8080 app
-
-    - name: Run tests
-      run: go test -tags=e2e ./...
-
+      - name: run test on docker-compose
+        run: |
+          docker-compose -f ./ci-test.yml build 
+          docker-compose -f ./ci-test.yml up --abort-on-container-exit
+          go test -tags=e2e -v ./...
+        working-directory: ./
