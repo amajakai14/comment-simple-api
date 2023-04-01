@@ -31,11 +31,11 @@ func Run() error {
 		return err
 	}
 
+	fmt.Println("shutting down our application")
 	return nil
 }
 
 func main() {
-	fmt.Println("Hello, World!")
 	if err := Run(); err != nil {
 		fmt.Println(err)
 	}
