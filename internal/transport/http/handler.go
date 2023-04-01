@@ -36,7 +36,7 @@ func NewHandler(service CommentService) *Handler {
 
 func (h *Handler) mapRoutes() {
 	h.Router.GET("/alive", func(c *gin.Context) {
-		fmt.Fprint(c.Writer, "server is alives")
+		fmt.Fprint(c.Writer, "server is alive")
 	})
 
 	h.Router.POST("/api/v1/comment", h.PostComment)

@@ -16,20 +16,12 @@ jobs:
         go-version: 1.19.x
     - uses: actions/checkout@v2
 
-    - name: Build and run Docker Compose
+    - name: Build and run Docker Compose Test
       run: |
         sudo apt-get update
         sudo apt-get install -y docker-compose
         docker-compose up -d --build
-
-    - name: Test
-      run: go test -tags=e2e -v ./...
-      env:
-        DB_HOST: localhost
-        DB_PORT: 5432
-        DB_USER: postgres
-        DB_PASSWORD: postgres
-        DB_NAME: postgres
+        go test -tags=e2e -v ./...
 
     - name: Stop Docker Compose
       run: docker-compose down
